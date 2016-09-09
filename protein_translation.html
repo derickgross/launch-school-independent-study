@@ -45,9 +45,11 @@
       }
 
       function combineAminoAcidsIntoSingleString(acids) {
-        return acids.reduce(function(previous, current) {
-          return (previous + ' ' + current);
-        });
+        return acids.reduce(joinParts);
+      }
+
+      function joinParts(previous, current) {
+        return (previous + ' ' + current);
       }
 
       var decryptionKey = {
