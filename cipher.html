@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <title>Cipher</title>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+
+    <script>
+      function encode(string, key) {
+        var trinary = generateTrinaryNumber(key);
+        var decimal = translateTrinaryToDecimal(trinary);
+        var shift = generateLetterShift(decimal);
+        return encodeString(string, shift)
+      }
+
+      function decode(string, key) {
+
+      }
+
+      function encodeString(string, shift) {;
+        var formattedString = string.toLowerCase().split(/[^a-z]+/i).reduce(function(previous, current) {
+          return (previous + current);
+        });
+
+        var partiallyEncoded = formattedString.split('').reduce(function(previous, letter) {
+          return (previous + String.fromCharCode(newAsciiNumericValue(letter.charCodeAt(0))));
+        }, '');
+
+        return rot13(partiallyEncoded, shift);
+      }
+
+      function generateLetterShift(number) {
+        return (differenceToLargestSmallerPrime(number) % 26);
+      }
+
+      function differenceToLargestSmallerPrime(number) {
+        var range = numberRange(number);;
+
+        var largestSmallerPrime = range.filter(isPrime)[range.filter(isPrime).length - 1];
+
+        return (number - largestSmallerPrime);
+      }
+
+      function numberRange(number) {
+        var output = [];
+
+        for (var i = 0; i < number; i++) {
+          output.push(i);
+        }
+
+        return output;
+      }
+
+      function isPrime(element, index, array) { // from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find
+        var start = 2;
+        while (start <= Math.sqrt(element)) {
+          if (element % start++ < 1) {
+            return false;
+          }
+        }
+        return (element > 1);
+      }
+
+      function generateTrinaryNumber(key) {
+        return Number(String(key).split(/[3456789]/).join(''));
+      }
+
+      function translateTrinaryToDecimal(number) {
+        var trinaryDigitArray = String(number).split('');
+
+        return trinaryDigitArray.reduce(function(previous, current, i, arr) {
+          return previous + (current * Math.pow(3, (arr.length - i - 1)));
+        }, 0);
+      }
+
+      // The following code is from the rot13 assignment earlier in this course.
+
+      const LOWER_CASE_ALPHABET_RANGE_START_ASCII = 97;
+      const LOWER_CASE_ALPHABET_RANGE_END_ASCII = 122;
+      const UPPER_CASE_ALPHABET_RANGE_START_ASCII = 65;
+      const UPPER_CASE_ALPHABET_RANGE_END_ASCII = 90;
+      const SINGLE_ROTATION = 13;
+      const DOUBLE_ROTATION = 26;
+
+      function rot13(string, shift) {
+        output = '';
+        var asciiNumeric;
+
+        for (i = 0; i < string.length; i++) {
+          asciiNumeric = (string[i].charCodeAt(0) + shift);
+
+          output += String.fromCharCode(newAsciiNumericValue(asciiNumeric));
+        }
+
+        return output;
+      }
+
+      function newAsciiNumericValue(currentAscii) {
+        if ((currentAscii >= UPPER_CASE_ALPHABET_RANGE_START_ASCII) && (currentAscii <= UPPER_CASE_ALPHABET_RANGE_END_ASCII)) {
+          currentAscii += SINGLE_ROTATION;
+          if (currentAscii > UPPER_CASE_ALPHABET_RANGE_END_ASCII) {
+            currentAscii -= DOUBLE_ROTATION;
+          }
+        }
+        if ((currentAscii >= LOWER_CASE_ALPHABET_RANGE_START_ASCII) && (currentAscii <= LOWER_CASE_ALPHABET_RANGE_END_ASCII)) {
+          currentAscii += SINGLE_ROTATION;
+          if (currentAscii > LOWER_CASE_ALPHABET_RANGE_END_ASCII) {
+            currentAscii -= DOUBLE_ROTATION;
+          }
+        }
+
+        return currentAscii;
+      }
+
+    </script>
+  </body>
+</html> 

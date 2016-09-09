@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <title>Protein Translation</title>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+
+    <script>
+      /* Adapted from Launch School weekly challenges
+
+      Create a translator that accepts a string of RNA codons and a decryption key as input, and returns a string of the proteins represented by the RNA codons.
+
+      def test_translates_rna_strand_into_correct_protein
+        strand = 'AUGUUUUGG'
+        expected = %w(Methionine Phenylalanine Tryptophan)
+        assert_equal expected, Translation.of_rna(strand)
+      end */
+
+      function translateRNAStrand(strand, decryptionKey) {
+        // splitStrandIntoCodons: for loop
+        // translateCodonsIntoAminoAcids: map
+        // combineAminoAcidsIntoSingleString: reduce
+
+        var codons = splitStrandIntoCodons(strand);
+        var acids = translateCodonsIntoAminoAcids(codons, decryptionKey);
+
+        return combineAminoAcidsIntoSingleString(acids)
+      }
+
+      function splitStrandIntoCodons(strand) {
+        var output = [];
+
+        for (var i = 0; i < strand.length; i += 3) {
+          output.push(strand.substr(i, 3));
+        }
+
+        return output;
+      }
+
+      function translateCodonsIntoAminoAcids(codons, decryptionKey) {
+        return codons.map(function(codon, i) {
+          return decryptionKey[codon];
+        });
+      }
+
+      function combineAminoAcidsIntoSingleString(acids) {
+        return acids.reduce(function(previous, current) {
+          return (previous + ' ' + current);
+        });
+      }
+
+      var decryptionKey = {
+        "AUG": "Methionine",
+        "UUU": "Phenylalanine",
+        "UUC": "Phenylalanine",
+        "UUA": "Leucine",
+        "UUG": "Leucine",
+        "UCU": "Serine",
+        "UCC": "Serine",
+        "UCA": "Serine",
+        "UCG": "Serine",
+        "UAU": "Tyrosine",
+        "UAC": "Tyrosine",
+        "UGU": "Cysteine",
+        "UGC": "Cysteine",
+        "UGG": "Tryptophan",
+        "UAA": "STOP",
+        "UAG": "STOP",
+        "UGA": "STOP"
+      };
+
+      var strand = 'AUGUUUUGG';
+
+      var strand2 = 'UACUGUUCCUUAAUGUGCUACUACUAU';
+
+    </script>
+  </body>
+</html> 

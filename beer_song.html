@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <title>Beer Song</title>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+
+    <script>
+      /* Adapted from Launch School weekly challenges, and simplified. */
+
+      function beerSong(verseNumber) {
+        var verseArray = createVerseArray(verseNumber); // for loop
+        var verseText = generateVerseTextForEachVerse(verseArray); // map
+        return combineVerses(verseText); // reduce
+      }
+
+      function createVerseArray(verseNumber) {
+        var output = [];
+
+        for (var i = verseNumber; i > 0; i--) {
+          output.push(i);
+        }
+
+        return output;
+      }
+
+      function remainingBottles(number) {
+        switch (true) {
+          case (number > 1):
+            return (String(number) + ' bottles');
+            break;
+          case (number === 1):
+            return '1 bottle';
+            break;
+          case (number === 0):
+            return 'no more bottles';
+            break;
+          default:
+            return '*incomprehensible, slurred speech* bottles';
+        }
+      }
+
+      function generateVerseTextForEachVerse(verseCollection) {
+        return verseCollection.map(function(element) {
+          return (String(element) + ' bottle' + (element > 1 ? 's' : '') + ' of beer on the wall. ' + String(element) + ' bottle'  + (element > 1 ? 's' : '') + ' of beer.\nTake one down and pass it around, ' + remainingBottles(element - 1) + ' of beer on the wall.')
+        });
+      }
+
+      function combineVerses(verses) {
+        var verseText = verses.reduce(function(previousVerses, verse) {
+          return (previousVerses + '\n\n' + verse);
+        }); 
+
+        return verseText + '\n\nNo more bottles of beer on the wall, no more bottles of beer.\n' + 'Go to the store and buy some more, 99 bottles of beer on the wall.';
+      }
+    </script>
+  </body>
+</html> 
